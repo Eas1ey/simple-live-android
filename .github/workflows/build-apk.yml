@@ -17,7 +17,6 @@ jobs:
       - name: Extract source code
         run: |
           unzip -q dart_simple_live-dev_v1.11.7.zip
-          mv dart_simple_live-dev_v1.11.7/simple_live_app .
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -32,7 +31,7 @@ jobs:
           channel: stable
 
       - name: Build Android APK
-        working-directory: simple_live_app
+        working-directory: dart_simple_live-dev_v1.11.7/simple_live_app
         run: |
           flutter pub get
           flutter build apk --debug
@@ -41,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Simple-Live-Android-APK
-          path: simple_live_app/build/app/outputs/flutter-apk/app-debug.apk
+          path: dart_simple_live-dev_v1.11.7/simple_live_app/build/app/outputs/flutter-apk/app-debug.apk
