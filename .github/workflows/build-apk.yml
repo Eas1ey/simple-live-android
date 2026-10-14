@@ -1,0 +1,44 @@
+name: Build Simple Live APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract source code
+        run: |
+          unzip -q dart_simple_live-dev_v1.11.7.zip
+          mv dart_simple_live-dev_v1.11.7/simple_live_app .
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.1'
+          channel: stable
+
+      - name: Build Android APK
+        working-directory: simple_live_app
+        run: |
+          flutter pub get
+          flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Simple-Live-Android-APK
+          path: simple_live_app/build/app/outputs/flutter-apk/app-debug.apk
